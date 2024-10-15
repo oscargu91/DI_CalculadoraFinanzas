@@ -1,1 +1,46 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+/* Fondo general de la escena */
+.root {
+    -fx-background-color: #A0D99C; /* Color verde claro */
+}
+
+/* Estilo para el título */
+.label-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #000000; /* Color de texto negro */
+    -fx-alignment: center;
+}
+
+/* Estilo para las etiquetas (USUARIO y PWD) */
+.label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #000000; /* Color de texto negro */
+    -fx-alignment: center-left;
+}
+
+/* Estilo para los campos de texto */
+.text-field {
+    -fx-background-color: #ffffff; /* Fondo blanco */
+    -fx-border-color: #000000;     /* Borde negro */
+    -fx-border-radius: 5px;        /* Bordes redondeados */
+    -fx-padding: 5px;
+    -fx-font-size: 14px;
+    -fx-text-fill: #000000;        /* Color de texto negro */
+}
+
+/* Estilo para el botón */
+.button {
+    -fx-background-color: #ffffff;   /* Fondo blanco */
+    -fx-border-color: #000000;       /* Borde negro */
+    -fx-border-radius: 5px;          /* Bordes redondeados */
+    -fx-font-size: 14px;
+    -fx-text-fill: #000000;          /* Color de texto negro */
+    -fx-padding: 10px;
+    -fx-alignment: center;
+}
+
+.button:hover {
+    -fx-background-color: #90EE90;   /* Cambia de color al pasar el mouse */
+}

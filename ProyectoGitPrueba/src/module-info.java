@@ -1,5 +1,6 @@
 module ProyectoGitPrueba {
-	requires javafx.controls;
-	
-	opens application to javafx.graphics, javafx.fxml;
+    requires javafx.controls;
+    requires javafx.graphics;
+    
+    exports com.carballeira.login.view; 
 }
