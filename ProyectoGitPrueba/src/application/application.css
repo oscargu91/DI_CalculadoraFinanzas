@@ -1,7 +1,7 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
 /* Fondo general de la escena */
 .root {
-    -fx-background-color: #A0D99C; /* Color verde claro */
+    -fx-background-color: #ABEEC5; /* Color verde claro */
 }
 
 /* Estilo para el título */
@@ -43,4 +43,33 @@
 
 .button:hover {
     -fx-background-color: #90EE90;   /* Cambia de color al pasar el mouse */
+}
+
+
+
+/* Estilo para los menús */
+.menu-bar {
+    -fx-background-color: lightgrey;
+}
+
+.menu {
+    -fx-background-color: grey;
+}
+
+.menu:hover {
+    -fx-background-color: darkgrey;
+}
+
+.menu-item {
+    -fx-text-fill: lightgrey; /* Color del texto del menú */
+    -fx-background-color: #a9a9a9; /* Color de fondo */
+}
+
+.menu-item:hover {
+    -fx-background-color: #d3d3d3; /* Color al pasar el mouse */
+}
+
+.menu-item:disabled {
+    -fx-opacity: 0.5; /* Transparencia para ítems deshabilitados */
+    -fx-background-color: #a9a9a9; /* Fondo para ítems deshabilitados */
 }

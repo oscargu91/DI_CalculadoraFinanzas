@@ -1,4 +1,7 @@
-package com.carballeira.login.view;
+package com.carballeira.aplicacion.view;
+import com.carballeira.aplicacion.controller.UsuarioController;
+import com.carballeira.aplicacion.model.Usuario;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -16,6 +19,9 @@ import javafx.stage.Stage;
 public class UsuarioView extends Application {
 
 
+	//token: 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
+	
+	
     // VARIABLES GLOBALES:
     private TextField fieldUsuario;
     private TextField fieldContrasenha;
@@ -28,17 +34,21 @@ public class UsuarioView extends Application {
     private final String BUTTON_LBL = "ENTRAR";
     private final String TITLE_FORM_LBL = "LOGIN";
     private final String PATH_CSS = "/application/application.css";
-
+    private Stage primaryStage;
+    
     @Override
     public void start(Stage primaryStage) {
-        try {
+        
+    	this.primaryStage = primaryStage;
+    	try {
+        	
             // Crear el GridPane
             GridPane root = new GridPane();
             root.setHgap(8);
             root.setVgap(8);
             root.setPadding(new Insets(5));
 
-            Scene scene = new Scene(root, 400, 200);
+            Scene scene = new Scene(root, 400, 300);
 
             // Crear las etiquetas y los campos de texto
             Label tituloLbl = new Label (TITULO_LBL);
@@ -52,9 +62,17 @@ public class UsuarioView extends Application {
             // Crear el botón de login
             botonLogin = new Button(BUTTON_LBL);
             botonLogin.setOnAction(event -> {
-                String usuario = fieldUsuario.getText();
+                //Creo un usuario
+            	String name = fieldUsuario.getText();
                 String password = fieldContrasenha.getText();
-                System.out.println("Usuario: " + usuario + ", PWD: " + password);
+                Usuario usuario = new Usuario (name,password);
+                
+                //Creo un controller y le paso el usuario que he creado
+                UsuarioController controller = new UsuarioController (usuario,this); 
+                
+                //Hago que el controller que acabo de crear llame al metodo que 
+                //comprueba las credenciales y le paso esta escena para sobreescribirle.
+                controller.checkCredencialesAcceso(primaryStage);
             });
 
             // Añadir elementos al GridPane
@@ -80,4 +98,7 @@ public class UsuarioView extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+    
+
+    
 }

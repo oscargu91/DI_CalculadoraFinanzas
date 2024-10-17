@@ -1,0 +1,11 @@
+<?xml version ="1.0" encoding = "UTF-8"?>
+<basededatos>
+  <usuario>
+    <user>maria</user>
+	<pwd>abc123.</pwd>  
+  </usuario>
+  <usuario>
+    <user>pepe</user>
+	<pwd>abc123.</pwd>
+  </usuario>
+</basededatos>
