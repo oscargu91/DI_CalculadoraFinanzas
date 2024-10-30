@@ -1,1 +1,85 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+/* Estilo general de la ventana */
+
+.root {
+    -fx-background-color: linear-gradient(to bottom right, #e0f7fa, #80deea);
+    -fx-padding: 30px;
+}
+
+/* Título principal */
+.label {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #006064;
+    -fx-padding: 15px 0;
+    -fx-alignment: center;
+}
+
+/* Campos de texto */
+.text-field {
+    -fx-pref-width: 250px;
+    -fx-padding: 8px;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #0097a7;
+    -fx-border-width: 1.5;
+    -fx-background-color: #ffffff;
+    -fx-font-size: 14px;
+    -fx-text-fill: #455a64;
+}
+
+.text-field:focused {
+    -fx-border-color: #00acc1;
+    -fx-border-width: 2;
+}
+
+/* Botones */
+.button {
+    -fx-background-color: #00acc1;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 15;
+    -fx-padding: 10px 25px;
+    -fx-cursor: hand;
+    -fx-border-radius: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 10, 0, 0, 5);
+    -fx-font-size: 14px;
+}
+
+.button:hover {
+    -fx-background-color: #00838f;
+}
+
+.button:pressed {
+    -fx-background-color: #006064;
+}
+
+/* RadioButtons */
+.radio-button {
+    -fx-text-fill: #006064;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+    -fx-opacity: 0.8;
+}
+
+.radio-button:selected {
+    -fx-mark-color: #00acc1;
+}
+
+/* GridPane spacing and alignment */
+.grid-pane {
+    -fx-hgap: 20px;
+    -fx-vgap: 20px;
+    -fx-padding: 20px;
+    -fx-background-color: rgba(255, 255, 255, 0.85);
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+    -fx-border-color: #b2ebf2;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 15, 0, 0, 8);
+}
+
+.grid-pane .label:first-child {
+    -fx-gridpane-column-span: 4;
+    -fx-alignment: center;
+}
