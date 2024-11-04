@@ -53,7 +53,8 @@ public class Main extends Application {
 
 	        // Crear el PieChart
 	        PieChart pieChart = new PieChart(pieChartData);
-	        pieChart.setTitle("DistribuciÃ³n Financiera");
+	        pieChart.setTitle("Distribución Financiera");
+	        pieChart.setLegendVisible(false);
 
 	       
 			
