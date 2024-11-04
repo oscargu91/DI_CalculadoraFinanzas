@@ -1,12 +1,10 @@
-/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
 /* Estilo general de la ventana */
-
 .root {
     -fx-background-color: linear-gradient(to bottom right, #e0f7fa, #80deea);
     -fx-padding: 30px;
 }
 
-/* TÃ­tulo principal */
+/* Título principal */
 .label {
     -fx-font-size: 26px;
     -fx-font-weight: bold;
@@ -82,4 +80,38 @@
 .grid-pane .label:first-child {
     -fx-gridpane-column-span: 4;
     -fx-alignment: center;
+}
+
+/* Tabla: Estilo de las columnas */
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: #b2ebf2;
+    -fx-border-width: 1;
+    -fx-background-radius: 10;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #e0f7fa;
+}
+
+.table-view .table-column .label {
+    -fx-font-size: 12px; /* Tamaño de fuente reducido para los títulos */
+    -fx-font-weight: bold;
+    -fx-text-fill: #006064;
+}
+
+.table-row-cell {
+    -fx-font-size: 13px;
+    -fx-text-fill: #455a64;
+    -fx-padding: 5px;
+}
+
+/* PieChart */
+.pie-chart {
+    -fx-background-color: rgba(255, 255, 255, 0.85);
+    -fx-padding: 10px;
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+    -fx-border-color: #b2ebf2;
+    -fx-border-width: 2;
 }
