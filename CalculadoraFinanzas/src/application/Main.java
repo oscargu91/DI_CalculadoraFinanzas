@@ -90,11 +90,15 @@ public class Main extends Application {
                     }
                 }
 
+                // Calcular el balance
+                double balance = totalIngresos - totalGastos;
+
                 // Crear el PieChart solo si hay entradas
                 if (!pieChartContainer.isVisible()) {
                     ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
-                            new PieChart.Data("Ingresos", totalIngresos),
-                            new PieChart.Data("Gastos", totalGastos)
+                            new PieChart.Data("Ingresos: " + totalIngresos + " €", totalIngresos),
+                            new PieChart.Data("Gastos: " + totalGastos + " €", totalGastos),
+                            new PieChart.Data("Balance: " + balance + " €", balance)
                     );
 
                     // Crear el PieChart
@@ -102,13 +106,21 @@ public class Main extends Application {
                     pieChart.setTitle("Distribución Financiera");
                     pieChart.setLegendVisible(false);
 
+                    // Establecer el color del balance según su valor
+                    setBalanceColor(pieChartData.get(2), balance);  // Establece el color del balance
+
                     pieChartContainer.getChildren().add(pieChart);
                     pieChartContainer.setVisible(true); // Hacer visible el contenedor del PieChart
+                    
                 } else {
                     // Actualizar los datos del PieChart si ya existe
                     PieChart pieChart = (PieChart) pieChartContainer.getChildren().get(0);
-                    pieChart.getData().set(0, new PieChart.Data("Ingresos", totalIngresos));
-                    pieChart.getData().set(1, new PieChart.Data("Gastos", totalGastos));
+                    pieChart.getData().set(0, new PieChart.Data("Ingresos: " + totalIngresos + " €", totalIngresos));
+                    pieChart.getData().set(1, new PieChart.Data("Gastos: " + totalGastos + " €", totalGastos));
+                    pieChart.getData().set(2, new PieChart.Data("Balance: " + balance + " €", balance));
+
+                    // Establecer el color del balance según su valor
+                    setBalanceColor(pieChart.getData().get(2), balance);  // Establece el color del balance
                 }
 
                 // Limpiar los campos después de agregar
@@ -138,8 +150,17 @@ public class Main extends Application {
         }
     }
 
+    // Método para establecer el color del segmento de balance
+    private void setBalanceColor(PieChart.Data data, Double balance) {
+        if (balance <= 0) {
+            data.getNode().setStyle("-fx-pie-color: red;");  // Color rojo si el balance es negativo
+        } else {
+            data.getNode().setStyle("-fx-pie-color: green;");  // Color verde si el balance es positivo
+        }
+        
+    }
+
     public static void main(String[] args) {
         launch(args);
     }
 }
-
