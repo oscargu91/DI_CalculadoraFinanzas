@@ -1,0 +1,5 @@
+INDEX VERSION 1.131+D:\AlejandroFH\Desarrollo de Interfaces\Repositorio DI\DI_CalculadoraFinanzas\.metadata\.plugins\org.eclipse.jdt.core
+1865797976.index
+284821566.index
+1478612513.index
+402086101.index
