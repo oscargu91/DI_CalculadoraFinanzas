@@ -1,0 +1,39 @@
+package application;
+
+public class FinanceEntry {
+    private final String name;
+    private final Double amount;
+    private final String type;
+    private final String author;  // Nuevo campo
+
+    public FinanceEntry(String name, Double amount, String type, String author) {
+        this.name = name;
+        this.amount = amount;
+        this.type = type;
+        this.author = author;
+    }
+    
+    
+
+    public FinanceEntry() {
+	
+	}
+
+
+
+	public String getName() {
+        return name;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+}

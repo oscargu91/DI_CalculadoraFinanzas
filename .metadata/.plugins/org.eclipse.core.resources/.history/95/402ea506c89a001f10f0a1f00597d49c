@@ -1,0 +1,94 @@
+package application;
+
+import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
+
+public class Main extends Application {
+    // Clase interna para representar los datos en la tabla
+    public static class FinanceEntry {
+        private final String name;
+        private final double amount;
+        private final String type;
+
+        public FinanceEntry(String name, double amount, String type) {
+            this.name = name;
+            this.amount = amount;
+            this.type = type;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public double getAmount() {
+            return amount;
+        }
+
+        public String getType() {
+            return type;
+        }
+    }
+
+    @Override
+    public void start(Stage primaryStage) {
+        try {
+            BorderPane root = new BorderPane();
+
+            // Parte superior: formulario
+            GridPane formulario = new GridPane();
+            formulario.setVgap(10);
+            formulario.setHgap(10);
+
+            Label titulo = new Label("Calculadora de finanzas");
+            TextField nombre = new TextField();
+            nombre.setPromptText("Nombre del gasto/ingreso");
+            TextField cantidad = new TextField();
+            cantidad.setPromptText("Cantidad");
+            TextField meta = new TextField();
+            meta.setPromptText("Meta financiera");
+
+            ToggleGroup botones = new ToggleGroup();
+            RadioButton gasto = new RadioButton("Gasto");
+            RadioButton ingreso = new RadioButton("Ingreso");
+            gasto.setToggleGroup(botones);
+            ingreso.setToggleGroup(botones);
+
+            Button calcular = new Button("Calcular");
+            Button agregar = new Button("Agregar");
+
+            formulario.add(titulo, 0, 0, 4, 1);
+            formulario.add(nombre, 0, 1);
+            formulario.add(cantidad, 1, 1);
+            formulario.add(gasto, 2, 1);
+            formulario.add(ingreso, 3, 1);
+            formulario.add(meta, 0, 2, 1, 2);
+            formulario.add(calcular, 1, 2);
+            formulario.add(agregar, 2, 2);
+
+            // Tabla para mostrar los datos
+            TableView<FinanceEntry> table = new TableView<>();
+            TableColumn<FinanceEntry, String> nameColumn = new TableColumn<>("Nombre");
+            nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+
+            TableColumn<FinanceEntry, Double> amountColumn = new TableColumn<>("Cantidad");
+            amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
+
+            TableColumn<FinanceEntry, String> typeColumn = new TableColumn<>("Tipo");
+            typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+
+            table.getColumns().addAll(nameColumn, amountColumn, typeColumn);
+
+            // Ajustar el ancho de la tabla y el PieChart
+            table.setPrefWidth(500); // Ancho preferido de la tabla
+            PieChart pieChart = new PieChart();
+            pieChart.setPrefWidth(500); // Ancho preferido del PieChart
+
+            // Lista observable para la tabla
+            ObservableList<FinanceEntry> financeData = FXcollectionsDuplication
