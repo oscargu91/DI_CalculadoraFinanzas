@@ -11,8 +11,6 @@ public class FinanceEntry {
         this.type = type;
 
     }
-    
-  
 
 	public String getName() {
         return name;
