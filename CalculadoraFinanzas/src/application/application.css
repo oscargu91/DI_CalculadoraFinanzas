@@ -1,4 +1,4 @@
-/* Estilo general de la ventana */
+/* Estilo general de la ventana principal y login */
 .root {
     -fx-background-color: linear-gradient(to bottom right, #e0f7fa, #80deea);
     -fx-padding: 30px;
@@ -13,7 +13,14 @@
     -fx-alignment: center;
 }
 
-/* Campos de texto */
+/* Labels en la ventana de login */
+.login-label {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #006064;
+}
+
+/* Campos de texto para la ventana de login y principal */
 .text-field {
     -fx-pref-width: 250px;
     -fx-padding: 8px;
@@ -26,12 +33,24 @@
     -fx-text-fill: #455a64;
 }
 
-.text-field:focused {
+.password-field {
+    -fx-pref-width: 250px;
+    -fx-padding: 8px;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: #0097a7;
+    -fx-border-width: 1.5;
+    -fx-background-color: #ffffff;
+    -fx-font-size: 14px;
+    -fx-text-fill: #455a64;
+}
+
+.text-field:focused, .password-field:focused {
     -fx-border-color: #00acc1;
     -fx-border-width: 2;
 }
 
-/* Botones */
+/* Botones para login y principal */
 .button {
     -fx-background-color: #00acc1;
     -fx-text-fill: white;
@@ -50,6 +69,19 @@
 
 .button:pressed {
     -fx-background-color: #006064;
+}
+
+/* Layout de login */
+.login-grid-pane {
+    -fx-hgap: 10px;
+    -fx-vgap: 10px;
+    -fx-padding: 20px;
+    -fx-background-color: rgba(255, 255, 255, 0.85);
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+    -fx-border-color: #b2ebf2;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 15, 0, 0, 8);
 }
 
 /* RadioButtons */
@@ -95,7 +127,7 @@
 }
 
 .table-view .table-column .label {
-    -fx-font-size: 12px; /* Tamaño de fuente reducido para los títulos */
+    -fx-font-size: 12px;
     -fx-font-weight: bold;
     -fx-text-fill: #006064;
 }

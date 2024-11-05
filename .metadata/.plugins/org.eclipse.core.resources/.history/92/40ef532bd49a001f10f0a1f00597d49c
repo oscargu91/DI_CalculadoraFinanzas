@@ -1,0 +1,204 @@
+package application;
+
+import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.scene.chart.PieChart;
+
+public class Main extends Application {
+    private String currentUser; // Variable to hold the logged-in user's name
+
+    @Override
+    public void start(Stage primaryStage) {
+        try {
+            // Initial Login Window
+            VBox loginLayout = new VBox(10);
+            loginLayout.setPadding(new javafx.geometry.Insets(20));
+            Label loginLabel = new Label("Iniciar Sesión");
+            TextField userField = new TextField();
+            userField.setPromptText("Nombre de usuario");
+            PasswordField passwordField = new PasswordField();
+            passwordField.setPromptText("Contraseña");
+            Button loginButton = new Button("Iniciar Sesión");
+            Button exitButton = new Button("Salir");
+
+            loginLayout.getChildren().addAll(loginLabel, userField, passwordField, loginButton, exitButton);
+            Scene loginScene = new Scene(loginLayout, 300, 200);
+            primaryStage.setScene(loginScene);
+            primaryStage.setTitle("Login");
+            primaryStage.show();
+
+            // Action for Exit button
+            exitButton.setOnAction(event -> primaryStage.close());
+
+            // Action for Login button
+            loginButton.setOnAction(event -> {
+                String username = userField.getText();
+                String password = passwordField.getText(); // Here you can add your password validation logic
+
+                if (!username.isEmpty() && !password.isEmpty()) {
+                    currentUser = username; // Store the username
+                    primaryStage.hide(); // Hide the login window
+                    createFinanceWindow(primaryStage); // Open the finance calculator window
+                } else {
+                    // Show alert if fields are empty
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Campos incompletos");
+                    alert.setContentText("Por favor, introduce tanto el nombre de usuario como la contraseña.");
+                    alert.showAndWait();
+                }
+            });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Method to create the finance calculator window
+    private void createFinanceWindow(Stage primaryStage) {
+        BorderPane root = new BorderPane();
+
+        // Form Section
+        GridPane formulario = new GridPane();
+        formulario.setVgap(10);
+        formulario.setHgap(10);
+
+        Label titulo = new Label("Calculadora de finanzas");
+        TextField nombre = new TextField();
+        nombre.setPromptText("Nombre del gasto/ingreso");
+        TextField cantidad = new TextField();
+        cantidad.setPromptText("Cantidad");
+        TextField meta = new TextField();
+        meta.setPromptText("Meta financiera");
+        Label goalStatusLabel = new Label(); // Label to show goal status
+
+        ToggleGroup botones = new ToggleGroup();
+        RadioButton gasto = new RadioButton("Gasto");
+        RadioButton ingreso = new RadioButton("Ingreso");
+        gasto.setToggleGroup(botones);
+        ingreso.setToggleGroup(botones);
+
+        Button calcular = new Button("Calcular");
+        Button agregar = new Button("Agregar");
+
+        formulario.add(titulo, 0, 0, 4, 1);
+        formulario.add(nombre, 0, 1);
+        formulario.add(cantidad, 1, 1);
+        formulario.add(gasto, 2, 1);
+        formulario.add(ingreso, 3, 1);
+        formulario.add(meta, 0, 2, 1, 2);
+        formulario.add(agregar, 1, 2);
+        formulario.add(goalStatusLabel, 0, 4, 4, 1); // Add label for goal status
+
+        // TableView for finance data
+        TableView<FinanceEntry> table = new TableView<>();
+        TableColumn<FinanceEntry, String> nameColumn = new TableColumn<>("Nombre");
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+
+        TableColumn<FinanceEntry, Double> amountColumn = new TableColumn<>("Cantidad");
+        amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
+
+        TableColumn<FinanceEntry, String> typeColumn = new TableColumn<>("Tipo");
+        typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
+
+        TableColumn<FinanceEntry, String> authorColumn = new TableColumn<>("Autor");
+        authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
+
+        table.getColumns().addAll(nameColumn, amountColumn, typeColumn, authorColumn);
+
+        // Observable list for table data
+        ObservableList<FinanceEntry> financeData = FXCollections.observableArrayList();
+        table.setItems(financeData);
+
+        // Create container for PieChart
+        VBox pieChartContainer = new VBox();
+        pieChartContainer.setVisible(false); // Initially invisible
+
+        // Total calculations label
+        Label totalsLabel = new Label("Total Ingresos: 0, Total Gastos: 0, Balance: 0");
+        totalsLabel.setStyle("-fx-font-weight: bold;");
+
+        // Button action for "Agregar"
+        agregar.setOnAction(event -> {
+            String entryName = nombre.getText();
+            Double entryAmount = Double.parseDouble(cantidad.getText());
+            String entryType = gasto.isSelected() ? "Gasto" : "Ingreso";
+
+            // Add new entry to finance data
+            financeData.add(new FinanceEntry(entryName, entryAmount, entryType, currentUser));
+
+            // Calculate totals for income and expenses
+            double totalIngresos = 0;
+            double totalGastos = 0;
+
+            for (FinanceEntry entry : financeData) {
+                if (entry.getType().equals("Ingreso")) {
+                    totalIngresos += entry.getAmount();
+                } else if (entry.getType().equals("Gasto")) {
+                    totalGastos += entry.getAmount();
+                }
+            }
+
+            // Update the totals label
+            double balance = totalIngresos - totalGastos;
+            totalsLabel.setText(String.format("Total Ingresos: %.2f, Total Gastos: %.2f, Balance: %.2f",
+                    totalIngresos, totalGastos, balance));
+
+            // Check goal status
+            double goalAmount = Double.parseDouble(meta.getText());
+            if (goalAmount > balance) {
+                goalStatusLabel.setText(String.format("Te faltan %.2f para alcanzar la meta.", goalAmount - balance));
+            } else {
+                goalStatusLabel.setText(String.format("La meta ha sido alcanzada, te sobra %.2f", balance - goalAmount));
+            }
+
+            // Create PieChart
+            ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
+                    new PieChart.Data("Ingresos: " + totalIngresos + " €", totalIngresos),
+                    new PieChart.Data("Gastos: " + totalGastos + " €", totalGastos),
+                    new PieChart.Data("Balance: " + balance + " €", balance)
+            );
+
+            PieChart pieChart = new PieChart(pieChartData);
+            pieChart.setTitle("Distribución Financiera");
+            pieChart.setLegendVisible(false);
+            pieChartContainer.getChildren().clear(); // Clear previous pie chart
+            pieChartContainer.getChildren().add(pieChart);
+            pieChartContainer.setVisible(true); // Make pie chart visible
+
+            // Clear fields after adding
+            nombre.clear();
+            cantidad.clear();
+            botones.selectToggle(null);
+            meta.clear();
+        });
+
+        // Organizing elements in HBox
+        HBox contenidoInferior = new HBox();
+        contenidoInferior.setSpacing(20);
+        contenidoInferior.getChildren().addAll(table, pieChartContainer);
+
+        // Add components to BorderPane
+        root.setTop(formulario);
+        root.setCenter(new Separator());
+        root.setBottom(contenidoInferior);
+        root.setRight(totalsLabel); // Add totals label to the right side
+
+        // Create the scene
+        Scene scene = new Scene(root, 1000, 800);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Calculadora de Finanzas"); // Title of the window
+        primaryStage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+}
