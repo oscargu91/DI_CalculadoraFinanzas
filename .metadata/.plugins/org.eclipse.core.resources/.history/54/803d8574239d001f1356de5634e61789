@@ -1,0 +1,27 @@
+package com.carballeira.controller;
+
+import com.carballeira.view.FinanceEntry;
+import com.carballeira.view.Main;
+
+public class LoginController {
+	private FinanceEntry model;
+	private Main vista;
+	
+	public LoginController(FinanceEntry model, Main vista) {
+		this.model = model;
+		this.vista = vista;
+	}
+
+	public LoginController(Main vista) {
+		this.vista = vista;
+	}
+	
+	
+	
+	public LoginController() {
+	}
+
+	
+
+	
+}

@@ -1,0 +1,129 @@
+package com.carballeira.view;
+
+import com.carballeira.controller.FinanceController;
+
+import javafx.application.Application;
+import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
+
+public class Main extends Application {
+    @Override
+    public void start(Stage primaryStage) {
+        mostrarPantallaLogin(primaryStage);
+    }
+
+    private void mostrarPantallaLogin(Stage primaryStage) {
+        Stage loginStage = new Stage();
+        loginStage.setTitle("Inicio de Sesión");
+
+        GridPane loginLayout = new GridPane();
+        loginLayout.setAlignment(Pos.CENTER);
+        loginLayout.setVgap(10);
+        loginLayout.setHgap(10);
+
+        Label user = new Label("Usuario: ");
+        TextField campoUsuario = new TextField();
+        campoUsuario.setPromptText("Ingrese su usuario");
+
+        Label pwd = new Label("Contraseña: ");
+        PasswordField campoContrasena = new PasswordField();
+        campoContrasena.setPromptText("Ingrese su contraseña");
+
+        Button botonIniciarSesion = new Button("Iniciar Sesión");
+        botonIniciarSesion.setOnAction(event -> manejarInicioSesion(loginStage, campoUsuario, campoContrasena, primaryStage));
+
+        Button botonSalir = new Button("Salir");
+        botonSalir.setOnAction(event -> loginStage.close());
+
+        loginLayout.add(user, 0, 0);
+        loginLayout.add(campoUsuario, 1, 0);
+        loginLayout.add(pwd, 0, 1);
+        loginLayout.add(campoContrasena, 1, 1);
+        loginLayout.add(botonIniciarSesion, 0, 2);
+        loginLayout.add(botonSalir, 1, 2);
+
+        Scene loginScene = new Scene(loginLayout, 600, 300);
+        loginStage.setScene(loginScene);
+        loginStage.show();
+    }
+
+    private void manejarInicioSesion(Stage loginStage, TextField campoUsuario, PasswordField campoContrasena, Stage primaryStage) {
+        String usuario = campoUsuario.getText();
+        String contrasena = campoContrasena.getText();
+
+        if (!usuario.isEmpty() && !contrasena.isEmpty()) {
+            loginStage.close();
+            mostrarPantallaPrincipal(primaryStage);
+        } else {
+            showAlert("Error", "Debe rellenar todos los campos para iniciar sesión.");
+        }
+    }
+
+    private void mostrarPantallaPrincipal(Stage primaryStage) {
+        BorderPane root = new BorderPane();
+        GridPane formulario = new GridPane();
+        formulario.setVgap(10);
+        formulario.setHgap(10);
+
+        Label titulo = new Label("Calculadora de finanzas");
+        TextField nombre = new TextField();
+        TextField cantidad = new TextField();
+        ToggleGroup tipo = new ToggleGroup();
+        RadioButton ingreso = new RadioButton("Ingreso");
+        ingreso.setToggleGroup(tipo);
+        RadioButton gasto = new RadioButton("Gasto");
+        gasto.setToggleGroup(tipo);
+        Button botonAgregar = new Button("Agregar");
+
+        VBox pieChartContainer = new VBox();
+        pieChartContainer.setVisible(false);
+        FinanceController controller = new FinanceController(pieChartContainer);
+
+        TableView<FinanceEntry> tabla = new TableView<>();
+        tabla.setItems(controller.getFinanceData());
+        TableColumn<FinanceEntry, String> columnaNombre = new TableColumn<>("Nombre");
+        columnaNombre.setCellValueFactory(new PropertyValueFactory<>("name"));
+        TableColumn<FinanceEntry, Double> columnaCantidad = new TableColumn<>("Cantidad");
+        columnaCantidad.setCellValueFactory(new PropertyValueFactory<>("amount"));
+        TableColumn<FinanceEntry, String> columnaTipo = new TableColumn<>("Tipo");
+        columnaTipo.setCellValueFactory(new PropertyValueFactory<>("type"));
+        TableColumn<FinanceEntry, Button> columnaAcciones = new TableColumn<>("Acción");
+        columnaAcciones.setCellValueFactory(new PropertyValueFactory<>("deleteButton"));
+
+        tabla.getColumns().addAll(columnaNombre, columnaCantidad, columnaTipo, columnaAcciones);
+
+        botonAgregar.setOnAction(event -> {
+            String nombreStr = nombre.getText();
+            String cantidadStr = cantidad.getText();
+            RadioButton selectedTipo = (RadioButton) tipo.getSelectedToggle();
+            String tipoStr = selectedTipo != null ? selectedTipo.getText() : null;
+
+            controller.agregarEntrada(nombreStr, cantidadStr, tipoStr);
+        });
+
+        root.setTop(titulo);
+        root.setCenter(tabla);
+        root.setLeft(formulario);
+        root.setBottom(pieChartContainer);
+
+        primaryStage.setScene(new Scene(root, 800, 600));
+        primaryStage.show();
+    }
+
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+}

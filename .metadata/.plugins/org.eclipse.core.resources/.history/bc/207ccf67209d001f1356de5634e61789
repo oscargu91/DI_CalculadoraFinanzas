@@ -1,0 +1,10 @@
+package com.carballeira.controller;
+
+import com.carballeira.view.FinanceEntry;
+import com.carballeira.view.Main;
+
+public class FinanceController {
+	private FinanceEntry model;
+	private Main vista;
+
+}

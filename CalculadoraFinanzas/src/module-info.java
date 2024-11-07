@@ -3,6 +3,7 @@ module CalculadoraFinanzas {
 	requires javafx.graphics;
 	requires javafx.base;
 	
-	opens application to javafx.graphics, javafx.fxml, javafx.base;
+	opens com.carballeira.view to javafx.graphics, javafx.fxml, javafx.base;
+	opens com.carballeira.model to javafx.graphics, javafx.fxml, javafx.base;
 
 }
