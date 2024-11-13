@@ -59,6 +59,20 @@ public class Main extends Application {
         loginLayout.add(campoContrasena, 1, 1);
         loginLayout.add(botonIniciarSesion, 0, 2);
         loginLayout.add(botonSalir, 1, 2);
+        
+        //Metodos para captar la pulsacion de enter y llamar al boton de iniciar sesion
+        
+        campoUsuario.addEventFilter(javafx.scene.input.KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == javafx.scene.input.KeyCode.ENTER) {
+            	botonIniciarSesion.fire();
+            }
+        });
+        
+        campoContrasena.addEventFilter(javafx.scene.input.KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == javafx.scene.input.KeyCode.ENTER) {
+            	botonIniciarSesion.fire();
+            }
+        });
 
         Scene loginScene = new Scene(loginLayout, 600, 300);
         loginScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
