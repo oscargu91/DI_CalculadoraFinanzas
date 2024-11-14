@@ -1,0 +1,58 @@
+package com.carballeira.model;
+
+import javafx.scene.control.Button;
+
+public class FinanceEntry {
+    private final String name;
+    private final String amount;
+    private final String type;
+    private final Button deleteButton;
+
+    public static final String ERROR_NOMBRE_VACIO = "El campo del nombre no puede estar vacío.";
+    public static final String ERROR_CANTIDAD_VACIA = "El campo de cantidad no puede estar vacío.";
+    public static final String ERROR_TIPO_NO_SELECCIONADO = "Debe seleccionar al menos un tipo: Gasto o Ingreso.";
+    public static final String ERROR_CANTIDAD_INVALIDA = "Debe introducir un número válido para la cantidad.";
+
+
+
+	public FinanceEntry(String name, String amount, String type, Button deleteButton) {
+		super();
+		this.name = name;
+		this.amount = amount;
+		this.type = type;
+		this.deleteButton = deleteButton;
+	}
+	
+	  public FinanceEntry(String name, String amount, String type) {
+			super();
+			this.name = name;
+			this.amount = amount;
+			this.type = type;
+		}
+	    
+
+
+	public String getName() {
+        return name;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+
+    public void validarEntrada() {
+        if (name.isEmpty()) throw new IllegalArgumentException(ERROR_NOMBRE_VACIO);
+        if (amount.isEmpty()) throw new IllegalArgumentException(ERROR_CANTIDAD_VACIA);
+        if (type == null) throw new IllegalArgumentException(ERROR_TIPO_NO_SELECCIONADO);
+        try {
+            Double.parseDouble(amount);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(ERROR_CANTIDAD_INVALIDA);
+        }
+    }
+}

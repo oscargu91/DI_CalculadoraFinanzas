@@ -1,6 +1,7 @@
 package com.carballeira.controller;
 
 import com.carballeira.model.FinanceEntry;
+import com.carballeira.view.AlertaView;
 import com.carballeira.view.Main;
 
 import javafx.scene.control.PasswordField;
@@ -34,7 +35,9 @@ public class LoginController {
             loginStage.close();
             vista.mostrarPantallaPrincipal(primaryStage);
         } else {
-            vista.showAlert(ERROR, ERROR_LOGIN);
+        	AlertaView vista2 = new AlertaView(); 
+            AlertaController controladorAlerta = new AlertaController(vista2); 
+        	controladorAlerta.crearAlerta(ERROR, ERROR_LOGIN);
         }
     }
 

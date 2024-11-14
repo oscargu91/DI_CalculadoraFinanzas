@@ -1,5 +1,6 @@
 package com.carballeira.view;
 
+import com.carballeira.controller.AlertaController;
 import com.carballeira.controller.FinanceController;
 import com.carballeira.controller.LoginController;
 import com.carballeira.model.FinanceEntry;
@@ -46,7 +47,7 @@ public class Main extends Application {
 	public static final String INICIO_SESION = "Inicio de Sesión";
 	public static final String USUARIO = "Usuario: ";
 	public static final String INGRESE_USUARIO = "Ingrese su usuario";
-	public static final String CONTRASENA = "Password";
+	public static final String CONTRASENA = "Password: ";
 	public static final String INGRESE_PASSWORD = "Ingrese su password";
 	public static final String INICIAR_SESION = "Iniciar Sesión";
 	public static final String SALIR = "Salir";
@@ -66,9 +67,23 @@ public class Main extends Application {
 	public static final String ACCION = "Acción";
 	public static final String GASTO = "Gasto";
 	public static final String INGRESO = "Ingreso";
-	public static final String BALANCE = "Balance";
-	public static final String CANTIDAD_INVALIDA = "Cantidad Inválida";
+	public static final String GASTOS = "Gastos: ";
+	public static final String INGRESOS = "Ingresos: ";
+	public static final String BALANCE = "Balance: ";
+	public static final String CANTIDAD_INVALIDA = "Cantidad Inválida.";
 	public static final String EURO = "€";
+	public static final String RUTA_CSS = "application.css";
+	public static final String RUTA_PAPELERA = "papelera_icon.png";
+	public static final String DISTRIBUCION_FINANCIERA = "Distribución Financiera";
+	public static final String LE_FALTAN = "Le faltan ";
+	public static final String EUROS_PARA_META = " € para llegar a la meta.";
+	public static final String META_SUPERADA = "Meta superada por ";
+	public static final String EURO2 = " €.";
+	public static final String VALOR_INVALIDO = "Valor Inválido";
+	public static final String ERROR_VALOR_INVALIDO = "Debe introducir un número válido para la meta financiera.";
+	public static final String ERROR_VALOR_NEGATIVO = "Debe introducir un número positivo para la meta financiera.";
+
+
 
 	
 
@@ -82,23 +97,23 @@ public class Main extends Application {
     private void mostrarPantallaLogin(Stage primaryStage) {
         Stage loginStage = new Stage();
         loginStage.initModality(Modality.APPLICATION_MODAL);
-        loginStage.setTitle("Inicio de Sesión");
+        loginStage.setTitle(INICIO_SESION);
 
         GridPane loginLayout = new GridPane();
         loginLayout.setAlignment(Pos.CENTER);
         loginLayout.setVgap(10);
         loginLayout.setHgap(10);
 
-        Label user = new Label("Usuario: ");
+        Label user = new Label(USUARIO);
         TextField campoUsuario = new TextField();
-        campoUsuario.setPromptText("Ingrese su usuario");
+        campoUsuario.setPromptText(INGRESE_USUARIO);
 
-        Label pwd = new Label("Contraseña: ");
+        Label pwd = new Label(CONTRASENA);
         PasswordField campoContrasena = new PasswordField();
-        campoContrasena.setPromptText("Ingrese su contraseña");
+        campoContrasena.setPromptText(INGRESE_PASSWORD);
 
-        Button botonIniciarSesion = new Button("Iniciar Sesión");
-        Button botonSalir = new Button("Salir");
+        Button botonIniciarSesion = new Button(INICIAR_SESION);
+        Button botonSalir = new Button(SALIR);
         botonSalir.setOnAction(event -> loginStage.close());
 
         // Crear un ProgressIndicator (ícono de carga)
@@ -106,16 +121,16 @@ public class Main extends Application {
         progressIndicator.setVisible(false); // Oculto por defecto
 
         // Crear un Label para el texto de "Cargando..."
-        Label loadingLabel = new Label("Cargando");
+        Label loadingLabel = new Label(CARGANDO1);
         loadingLabel.setVisible(false); // Oculto por defecto
 
         // Crear un Timeline para animar el texto "Cargando..."
         Timeline loadingAnimation = new Timeline(
-            new KeyFrame(Duration.ZERO, e -> loadingLabel.setText("Cargando")),
-            new KeyFrame(Duration.seconds(0.5), e -> loadingLabel.setText("Cargando.")),
-            new KeyFrame(Duration.seconds(1), e -> loadingLabel.setText("Cargando..")),
-            new KeyFrame(Duration.seconds(1.5), e -> loadingLabel.setText("Cargando...")),
-            new KeyFrame(Duration.seconds(2), e -> loadingLabel.setText("Cargando...."))
+            new KeyFrame(Duration.ZERO, e -> loadingLabel.setText(CARGANDO1)),
+            new KeyFrame(Duration.seconds(0.5), e -> loadingLabel.setText(CARGANDO2)),
+            new KeyFrame(Duration.seconds(1), e -> loadingLabel.setText(CARGANDO3)),
+            new KeyFrame(Duration.seconds(1.5), e -> loadingLabel.setText(CARGANDO4)),
+            new KeyFrame(Duration.seconds(2), e -> loadingLabel.setText(CARGANDO5))
         );
         loadingAnimation.setCycleCount(Timeline.INDEFINITE);
 
@@ -169,7 +184,7 @@ public class Main extends Application {
         });
 
         Scene loginScene = new Scene(loginLayout, 600, 300);
-        loginScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+        loginScene.getStylesheets().add(getClass().getResource(RUTA_CSS).toExternalForm());
         loginStage.setScene(loginScene);
         loginStage.show();
     }
@@ -182,22 +197,22 @@ public class Main extends Application {
             formulario.setVgap(10);
             formulario.setHgap(10);
 
-            Label titulo = new Label("Calculadora de finanzas");
+            Label titulo = new Label(CALCULADORA_FINANZAS);
             TextField nombre = new TextField();
-            nombre.setPromptText("Nombre del gasto/ingreso");
+            nombre.setPromptText(NOMBRE_GASTO_INGRESO);
             TextField cantidad = new TextField();
-            cantidad.setPromptText("Cantidad");
+            cantidad.setPromptText(CANTIDAD);
             TextField meta = new TextField();
-            meta.setPromptText("Meta financiera");
+            meta.setPromptText(META_FINANCIERA);
 
             ToggleGroup botones = new ToggleGroup();
-            RadioButton gasto = new RadioButton("Gasto");
-            RadioButton ingreso = new RadioButton("Ingreso");
+            RadioButton gasto = new RadioButton(GASTO);
+            RadioButton ingreso = new RadioButton(INGRESO);
             gasto.setToggleGroup(botones);
             ingreso.setToggleGroup(botones);
 
-            Button calcular = new Button("Calcular");
-            Button agregar = new Button("Agregar");
+            Button calcular = new Button(CALCULAR);
+            Button agregar = new Button(AGREGAR);
             Label resultadoMeta = new Label();
 
             formulario.add(titulo, 0, 0, 4, 1);
@@ -239,7 +254,7 @@ public class Main extends Application {
             root.setBottom(contenidoInferior);
 
             Scene scene = new Scene(root, 840, 700);
-            scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource(RUTA_CSS).toExternalForm());
             primaryStage.setScene(scene);
             primaryStage.show();
         } catch (Exception e) {
@@ -250,22 +265,22 @@ public class Main extends Application {
     //metodo para crear la tabla de datos
     private TableView<FinanceEntry> crearTablaFinance() {
         TableView<FinanceEntry> table = new TableView<>();
-        TableColumn<FinanceEntry, String> nombreCol = new TableColumn<>("Nombre");
+        TableColumn<FinanceEntry, String> nombreCol = new TableColumn<>(NAME);
         nombreCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         nombreCol.setPrefWidth(60);
         nombreCol.setStyle("-fx-alignment: CENTER;");
 
-        TableColumn<FinanceEntry, Double> cantidadCol = new TableColumn<>("Cantidad");
+        TableColumn<FinanceEntry, Double> cantidadCol = new TableColumn<>(CANTIDAD);
         cantidadCol.setCellValueFactory(new PropertyValueFactory<>("amount"));
         cantidadCol.setPrefWidth(60);
         cantidadCol.setStyle("-fx-alignment: CENTER;");
 
-        TableColumn<FinanceEntry, String> tipoCol = new TableColumn<>("Tipo");
+        TableColumn<FinanceEntry, String> tipoCol = new TableColumn<>(TIPO);
         tipoCol.setCellValueFactory(new PropertyValueFactory<>("type"));
         tipoCol.setPrefWidth(60);
         tipoCol.setStyle("-fx-alignment: CENTER;");
 
-        TableColumn<FinanceEntry, Button> eliminarCol = new TableColumn<>("Acción");
+        TableColumn<FinanceEntry, Button> eliminarCol = new TableColumn<>(ACCION);
         eliminarCol.setCellValueFactory(new PropertyValueFactory<>("deleteButton"));
         eliminarCol.setPrefWidth(60);
         eliminarCol.setStyle("-fx-alignment: CENTER;");
@@ -298,14 +313,17 @@ public class Main extends Application {
             botones.selectToggle(null);
         } catch (IllegalArgumentException e) {
             // Si hay un error con el formato de la cantidad, mostramos un mensaje de error
-            showAlert("Error", "Cantidad inválida.");
+        	
+        	AlertaView vista2 = new AlertaView(); 
+            AlertaController controladorAlerta = new AlertaController(vista2);
+            controladorAlerta.crearAlerta(ERROR, CANTIDAD_INVALIDA);
         }
     }
     
     //metodo para añadir el boton de eliminar en la tabla, asociado a la fila correspondiente
     private Button crearBotonEliminar(String entryName, String entryAmount, ObservableList<FinanceEntry> financeData, VBox pieChartContainer) {
         Button deleteButton = new Button();
-        Image papeleraIcon = new Image(getClass().getResourceAsStream("papelera_icon.png"));
+        Image papeleraIcon = new Image(getClass().getResourceAsStream(RUTA_PAPELERA));
         ImageView papeleraImageView = new ImageView(papeleraIcon);
         papeleraImageView.setFitWidth(20);
         papeleraImageView.setFitHeight(20);
@@ -320,8 +338,8 @@ public class Main extends Application {
     
     //metodo secundario usado por actualizarPiechart() para actualizar el gráfico
     private void actualizarBalanceYGrafico(ObservableList<FinanceEntry> financeData, VBox pieChartContainer) {
-    	double totalIngresos = financeData.stream().filter(e -> e.getType().equals("Ingreso")).mapToDouble(e -> Double.parseDouble(e.getAmount())).sum();
-    	double totalGastos = financeData.stream().filter(e -> e.getType().equals("Gasto")).mapToDouble(e -> Double.parseDouble(e.getAmount())).sum();
+    	double totalIngresos = financeData.stream().filter(e -> e.getType().equals(INGRESO)).mapToDouble(e -> Double.parseDouble(e.getAmount())).sum();
+    	double totalGastos = financeData.stream().filter(e -> e.getType().equals(GASTO)).mapToDouble(e -> Double.parseDouble(e.getAmount())).sum();
         double balance = totalIngresos - totalGastos;
 
         actualizarPieChart(pieChartContainer, totalIngresos, totalGastos, balance);
@@ -342,12 +360,12 @@ public class Main extends Application {
     //metodo para inicializar el piechart
     private PieChart crearPieChart(double totalIngresos, double totalGastos, double balance) {
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
-                new PieChart.Data("Ingresos: " + totalIngresos + " €", totalIngresos),
-                new PieChart.Data("Gastos: " + totalGastos + " €", totalGastos),
-                new PieChart.Data("Balance: " + balance + " €", Math.abs(balance))
+                new PieChart.Data(INGRESOS + totalIngresos + EURO, totalIngresos),
+                new PieChart.Data(GASTOS + totalGastos + EURO, totalGastos),
+                new PieChart.Data(BALANCE + balance + EURO, Math.abs(balance))
         );
         PieChart pieChart = new PieChart(pieChartData);
-        pieChart.setTitle("Distribución Financiera");
+        pieChart.setTitle(DISTRIBUCION_FINANCIERA);
         pieChart.setLegendVisible(false);
         setBalanceColor(pieChartData.get(2), balance);
         return pieChart;
@@ -355,9 +373,9 @@ public class Main extends Application {
    
     //metodo primario para actualizar los datos del piechart
     private void actualizarDatosPieChart(PieChart pieChart, double totalIngresos, double totalGastos, double balance) {
-        pieChart.getData().set(0, new PieChart.Data("Ingresos: " + totalIngresos + " €", totalIngresos));
-        pieChart.getData().set(1, new PieChart.Data("Gastos: " + totalGastos + " €", totalGastos));
-        pieChart.getData().set(2, new PieChart.Data("Balance: " + balance + " €", Math.abs(balance)));
+        pieChart.getData().set(0, new PieChart.Data(INGRESOS + totalIngresos + EURO, totalIngresos));
+        pieChart.getData().set(1, new PieChart.Data(GASTOS + totalGastos + EURO, totalGastos));
+        pieChart.getData().set(2, new PieChart.Data(BALANCE + balance + EURO, Math.abs(balance)));
         setBalanceColor(pieChart.getData().get(2), balance);
     }
     
@@ -368,19 +386,31 @@ public class Main extends Application {
             double balance = calcularBalance(financeData);
 
             if (balance < metaValue) {
-                resultadoMeta.setText("Le faltan " + (metaValue - balance) + " € para llegar a la meta.");
-            } else {
-                resultadoMeta.setText("Meta superada por " + (balance - metaValue) + " €.");
+                resultadoMeta.setText(LE_FALTAN + (metaValue - balance) + EUROS_PARA_META);
             }
+            else if(metaValue < 0) {
+                	
+                	AlertaView vista2 = new AlertaView(); 
+                    AlertaController controladorAlerta = new AlertaController(vista2); 
+                    controladorAlerta.crearAlerta(ERROR, ERROR_VALOR_NEGATIVO);
+            } else {
+            	
+                resultadoMeta.setText(META_SUPERADA + (balance - metaValue) + EURO2);
+            }
+ 
+            
         } catch (NumberFormatException e) {
-            showAlert("Valor Inválido", "Debe introducir un número válido para la meta financiera.");
+        	
+        	AlertaView vista2 = new AlertaView(); 
+            AlertaController controladorAlerta = new AlertaController(vista2); 
+            controladorAlerta.crearAlerta(ERROR, ERROR_VALOR_INVALIDO);
         }
     }
     
     //metodo para calcular el balance actual (ingresos - gastos)
     private double calcularBalance(ObservableList<FinanceEntry> financeData) {
-    	double totalIngresos = financeData.stream().filter(e -> e.getType().equals("Ingreso")).mapToDouble(e -> Double.parseDouble(e.getAmount())).sum();
-    	double totalGastos = financeData.stream().filter(e -> e.getType().equals("Gasto")).mapToDouble(e -> Double.parseDouble(e.getAmount())).sum();
+    	double totalIngresos = financeData.stream().filter(e -> e.getType().equals(INGRESO)).mapToDouble(e -> Double.parseDouble(e.getAmount())).sum();
+    	double totalGastos = financeData.stream().filter(e -> e.getType().equals(GASTO)).mapToDouble(e -> Double.parseDouble(e.getAmount())).sum();
         return totalIngresos - totalGastos;
     }
     
@@ -393,14 +423,7 @@ public class Main extends Application {
         }
     }
     
-    //metodo de creacion de las alertas
-    public void showAlert(String title, String content) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-        alert.showAndWait();
-    }
+   
     
     //metodo de inicio de la aplicacion
     public static void main(String[] args) {

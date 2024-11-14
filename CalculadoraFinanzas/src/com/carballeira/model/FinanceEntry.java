@@ -69,14 +69,30 @@ public class FinanceEntry {
 
 
 
-	public void validarEntrada() {
-        if (name.isEmpty()) throw new IllegalArgumentException(ERROR_NOMBRE_VACIO);
-        if (amount.isEmpty()) throw new IllegalArgumentException(ERROR_CANTIDAD_VACIA);
-        if (type == null) throw new IllegalArgumentException(ERROR_TIPO_NO_SELECCIONADO);
-        try {
-            Double.parseDouble(amount);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException(ERROR_CANTIDAD_INVALIDA);
-        }
-    }
+	public String validarEntrada() {
+	    // Verifica si el nombre está vacío
+	    if (name.isEmpty()) {
+	        return ERROR_NOMBRE_VACIO;
+	    }
+	    
+	    // Verifica si la cantidad está vacía
+	    if (amount.isEmpty()) {
+	        return ERROR_CANTIDAD_VACIA;
+	    }
+
+	    // Verifica si el tipo es nulo
+	    if (type == null) {
+	        return ERROR_TIPO_NO_SELECCIONADO;
+	    }
+
+	    // Verifica si la cantidad es un número válido
+	    try {
+	        Double.parseDouble(amount);
+	    } catch (NumberFormatException e) {
+	        return ERROR_CANTIDAD_INVALIDA;
+	    }
+	    //si no hay ningun error, devuelve un string vacio que se usa posteriormente como validador
+	    return ""; 
+	}
+
 }
