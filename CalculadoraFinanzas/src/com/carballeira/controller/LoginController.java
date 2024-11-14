@@ -4,8 +4,6 @@ import com.carballeira.model.FinanceEntry;
 import com.carballeira.view.AlertaView;
 import com.carballeira.view.Main;
 
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class LoginController {

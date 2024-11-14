@@ -5,8 +5,6 @@ import com.carballeira.view.AlertaView;
 import com.carballeira.view.Main;
 
 import javafx.collections.ObservableList;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
 
