@@ -4,6 +4,8 @@ import com.carballeira.controller.FinanceController;
 import com.carballeira.controller.LoginController;
 import com.carballeira.model.FinanceEntry;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,6 +19,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class Main extends Application {
 	
@@ -48,10 +51,53 @@ public class Main extends Application {
         campoContrasena.setPromptText("Ingrese su contraseña");
 
         Button botonIniciarSesion = new Button("Iniciar Sesión");
-        botonIniciarSesion.setOnAction(event -> controllerL.manejarInicioSesion(this,loginStage, campoUsuario.getText(), campoContrasena.getText(), primaryStage));
-
         Button botonSalir = new Button("Salir");
         botonSalir.setOnAction(event -> loginStage.close());
+
+        // Crear un ProgressIndicator (ícono de carga)
+        ProgressIndicator progressIndicator = new ProgressIndicator();
+        progressIndicator.setVisible(false); // Oculto por defecto
+
+        // Crear un Label para el texto de "Cargando..."
+        Label loadingLabel = new Label("Cargando");
+        loadingLabel.setVisible(false); // Oculto por defecto
+
+        // Crear un Timeline para animar el texto "Cargando..."
+        Timeline loadingAnimation = new Timeline(
+            new KeyFrame(Duration.ZERO, e -> loadingLabel.setText("Cargando")),
+            new KeyFrame(Duration.seconds(0.5), e -> loadingLabel.setText("Cargando.")),
+            new KeyFrame(Duration.seconds(1), e -> loadingLabel.setText("Cargando..")),
+            new KeyFrame(Duration.seconds(1.5), e -> loadingLabel.setText("Cargando...")),
+            new KeyFrame(Duration.seconds(2), e -> loadingLabel.setText("Cargando...."))
+        );
+        loadingAnimation.setCycleCount(Timeline.INDEFINITE);
+
+        // Configurar acción del botón de inicio de sesión
+        botonIniciarSesion.setOnAction(event -> {
+            // Mostrar el indicador de carga y el texto de "Cargando..."
+            progressIndicator.setVisible(true);
+            loadingLabel.setVisible(true);
+            loadingAnimation.play(); // Iniciar la animación de "Cargando..."
+
+            // Crear un nuevo hilo para simular la espera
+            new Thread(() -> {
+                try {
+                    // Simulación de un tiempo de descarga (4 segundos)
+                    Thread.sleep(4000);
+                    
+                    // Ejecutar la lógica de inicio de sesión en el hilo de la interfaz gráfica
+                    javafx.application.Platform.runLater(() -> {
+                        progressIndicator.setVisible(false); // Ocultar el indicador de carga
+                        loadingLabel.setVisible(false); // Ocultar el texto de "Cargando..."
+                        loadingAnimation.stop(); // Detener la animación
+                        controllerL.manejarInicioSesion(this, loginStage, campoUsuario.getText(), campoContrasena.getText(), primaryStage);
+                    });
+                    
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }).start();
+        });
 
         loginLayout.add(user, 0, 0);
         loginLayout.add(campoUsuario, 1, 0);
@@ -59,18 +105,19 @@ public class Main extends Application {
         loginLayout.add(campoContrasena, 1, 1);
         loginLayout.add(botonIniciarSesion, 0, 2);
         loginLayout.add(botonSalir, 1, 2);
-        
-        //Metodos para captar la pulsacion de enter y llamar al boton de iniciar sesion
-        
+        loginLayout.add(progressIndicator, 1, 3); // Añadir el indicador de carga en la interfaz
+        loginLayout.add(loadingLabel, 0, 3); // Añadir el texto de carga en la interfaz
+
+        // Métodos para captar la pulsación de Enter y llamar al botón de iniciar sesión
         campoUsuario.addEventFilter(javafx.scene.input.KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == javafx.scene.input.KeyCode.ENTER) {
-            	botonIniciarSesion.fire();
+                botonIniciarSesion.fire();
             }
         });
         
         campoContrasena.addEventFilter(javafx.scene.input.KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == javafx.scene.input.KeyCode.ENTER) {
-            	botonIniciarSesion.fire();
+                botonIniciarSesion.fire();
             }
         });
 
@@ -78,8 +125,6 @@ public class Main extends Application {
         loginScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
         loginStage.setScene(loginScene);
         loginStage.show();
-        
-        
     }
 
 
