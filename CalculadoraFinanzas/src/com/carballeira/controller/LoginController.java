@@ -11,6 +11,9 @@ public class LoginController {
 	private FinanceEntry model;
 	private Main vista;
 	
+	public static final String ERROR = "Error";
+	public static final String ERROR_LOGIN = "Debe rellenar todos los campos para iniciar sesión.";
+	
 	public LoginController(FinanceEntry model, Main vista) {
 		this.model = model;
 		this.vista = vista;
@@ -31,7 +34,7 @@ public class LoginController {
             loginStage.close();
             vista.mostrarPantallaPrincipal(primaryStage);
         } else {
-            vista.showAlert("Error", "Debe rellenar todos los campos para iniciar sesión.");
+            vista.showAlert(ERROR, ERROR_LOGIN);
         }
     }
 

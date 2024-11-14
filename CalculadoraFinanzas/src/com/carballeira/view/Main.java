@@ -12,11 +12,24 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.Separator;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -25,6 +38,40 @@ public class Main extends Application {
 	
 	FinanceController controller = new FinanceController(this);
 	LoginController controllerL = new LoginController(this);
+	
+	private TextField nombre = new TextField();
+	private TextField cantidad = new TextField();
+	
+	public static final String ERROR = "Error";
+	public static final String INICIO_SESION = "Inicio de Sesión";
+	public static final String USUARIO = "Usuario: ";
+	public static final String INGRESE_USUARIO = "Ingrese su usuario";
+	public static final String CONTRASENA = "Password";
+	public static final String INGRESE_PASSWORD = "Ingrese su password";
+	public static final String INICIAR_SESION = "Iniciar Sesión";
+	public static final String SALIR = "Salir";
+	public static final String CARGANDO1 = "Cargando";
+	public static final String CARGANDO2 = "Cargando.";
+	public static final String CARGANDO3 = "Cargando..";
+	public static final String CARGANDO4 = "Cargando...";
+	public static final String CARGANDO5 = "Cargando....";
+	public static final String CALCULADORA_FINANZAS = "Calculadora de Finanzas";
+	public static final String NOMBRE_GASTO_INGRESO = "Nombre del gasto/ingreso";
+	public static final String CANTIDAD = "Cantidad";
+	public static final String META_FINANCIERA = "Meta Financiera";
+	public static final String CALCULAR = "Calcular";
+	public static final String AGREGAR = "Agregar";
+	public static final String NAME = "Nombre";
+	public static final String TIPO = "Tipo";
+	public static final String ACCION = "Acción";
+	public static final String GASTO = "Gasto";
+	public static final String INGRESO = "Ingreso";
+	public static final String BALANCE = "Balance";
+	public static final String CANTIDAD_INVALIDA = "Cantidad Inválida";
+	public static final String EURO = "€";
+
+	
+
 	
 
     @Override
@@ -171,7 +218,17 @@ public class Main extends Application {
             pieChartContainer.setVisible(false);
 
             calcular.setOnAction(event -> calcularMeta(meta, resultadoMeta, financeData));
-            agregar.setOnAction(event -> controller.agregarDatos(nombre, cantidad, gasto, ingreso, financeData, pieChartContainer, botones));
+            agregar.setOnAction(event -> {
+                String nombre1 = nombre.getText();
+                String cantidad1 = cantidad.getText();
+                String gasto1 = gasto.isSelected() ? GASTO : ingreso.isSelected() ? INGRESO : null;
+                
+                FinanceEntry modelo = new FinanceEntry(nombre1, cantidad1, gasto1);
+                controller.setModel(modelo);
+                		
+                controller.agregarDatos(financeData, pieChartContainer, botones);
+            });
+
 
             HBox contenidoInferior = new HBox();
             contenidoInferior.setSpacing(20);
@@ -219,19 +276,18 @@ public class Main extends Application {
     }
     
     //metodo para rellenar la tabla con la informacion del modelo FinanceEntry
-    public void agregarEntrada(TextField nombre, TextField cantidad, RadioButton gasto, RadioButton ingreso, ObservableList<FinanceEntry> financeData, VBox pieChartContainer, ToggleGroup botones) {
-        String entryName = nombre.getText();
-        String entryAmountStr = cantidad.getText();
-        String entryType = gasto.isSelected() ? "Gasto" : ingreso.isSelected() ? "Ingreso" : null;
+    public void agregarEntrada(FinanceEntry model, ObservableList<FinanceEntry> financeData, VBox pieChartContainer, ToggleGroup botones) {
+        String entryName = model.getName();
+        String entryAmountStr = String.valueOf(model.getAmount());
+        String entryType = model.getType();
 
         try {
-            // Convertimos la cantidad de String a Double
-            Double entryAmount = Double.parseDouble(entryAmountStr);
+
             // Creamos el botón de eliminación para la entrada
-            Button deleteButton = crearBotonEliminar(entryName, entryAmount, financeData, pieChartContainer);
+            Button deleteButton = crearBotonEliminar(entryName, entryAmountStr, financeData, pieChartContainer);
 
             // Agregamos la nueva entrada a los datos financieros
-            financeData.add(new FinanceEntry(entryName, entryAmount, entryType, deleteButton));
+            financeData.add(new FinanceEntry(entryName, entryAmountStr, entryType, deleteButton));
 
             // Actualizamos el balance y el gráfico
             actualizarBalanceYGrafico(financeData, pieChartContainer);
@@ -247,7 +303,7 @@ public class Main extends Application {
     }
     
     //metodo para añadir el boton de eliminar en la tabla, asociado a la fila correspondiente
-    private Button crearBotonEliminar(String entryName, double entryAmount, ObservableList<FinanceEntry> financeData, VBox pieChartContainer) {
+    private Button crearBotonEliminar(String entryName, String entryAmount, ObservableList<FinanceEntry> financeData, VBox pieChartContainer) {
         Button deleteButton = new Button();
         Image papeleraIcon = new Image(getClass().getResourceAsStream("papelera_icon.png"));
         ImageView papeleraImageView = new ImageView(papeleraIcon);
@@ -264,8 +320,8 @@ public class Main extends Application {
     
     //metodo secundario usado por actualizarPiechart() para actualizar el gráfico
     private void actualizarBalanceYGrafico(ObservableList<FinanceEntry> financeData, VBox pieChartContainer) {
-        double totalIngresos = financeData.stream().filter(e -> e.getType().equals("Ingreso")).mapToDouble(FinanceEntry::getAmount).sum();
-        double totalGastos = financeData.stream().filter(e -> e.getType().equals("Gasto")).mapToDouble(FinanceEntry::getAmount).sum();
+    	double totalIngresos = financeData.stream().filter(e -> e.getType().equals("Ingreso")).mapToDouble(e -> Double.parseDouble(e.getAmount())).sum();
+    	double totalGastos = financeData.stream().filter(e -> e.getType().equals("Gasto")).mapToDouble(e -> Double.parseDouble(e.getAmount())).sum();
         double balance = totalIngresos - totalGastos;
 
         actualizarPieChart(pieChartContainer, totalIngresos, totalGastos, balance);
@@ -323,8 +379,8 @@ public class Main extends Application {
     
     //metodo para calcular el balance actual (ingresos - gastos)
     private double calcularBalance(ObservableList<FinanceEntry> financeData) {
-        double totalIngresos = financeData.stream().filter(e -> e.getType().equals("Ingreso")).mapToDouble(FinanceEntry::getAmount).sum();
-        double totalGastos = financeData.stream().filter(e -> e.getType().equals("Gasto")).mapToDouble(FinanceEntry::getAmount).sum();
+    	double totalIngresos = financeData.stream().filter(e -> e.getType().equals("Ingreso")).mapToDouble(e -> Double.parseDouble(e.getAmount())).sum();
+    	double totalGastos = financeData.stream().filter(e -> e.getType().equals("Gasto")).mapToDouble(e -> Double.parseDouble(e.getAmount())).sum();
         return totalIngresos - totalGastos;
     }
     

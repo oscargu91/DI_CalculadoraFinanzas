@@ -12,6 +12,10 @@ import javafx.scene.layout.VBox;
 public class FinanceController {
 	private FinanceEntry model;
 	private Main vista;
+	
+	public static final String ERROR = "Error";
+	public static final String GASTO = "Gasto";
+	public static final String INGRESO = "Ingreso";
 
 	public FinanceController(FinanceEntry model, Main vista) {
 		this.model = model;
@@ -25,22 +29,31 @@ public class FinanceController {
 	
 	
 	
-	public void agregarDatos(TextField nombre, TextField cantidad, RadioButton gasto, RadioButton ingreso, ObservableList<FinanceEntry> financeData, VBox pieChartContainer, ToggleGroup botones) {
-	    String nombre1 = nombre.getText();
-	    String cantidad1 = cantidad.getText();
-	    String gasto1 = gasto.isSelected() ? "Gasto" : ingreso.isSelected() ? "Ingreso" : null;
+	public void agregarDatos(ObservableList<FinanceEntry> financeData, VBox pieChartContainer, ToggleGroup botones) {
+	
 
 	    try {
 	        // Validamos los datos utilizando el método de la clase modelo
-	        FinanceEntry.validarEntrada(nombre1, cantidad1, gasto1);
+	        model.validarEntrada();
 
 	        // Si la validación es correcta, se llama a la vista para agregar la entrada
-	        vista.agregarEntrada(nombre, cantidad, gasto, ingreso, financeData, pieChartContainer, botones);
+	        vista.agregarEntrada(model, financeData, pieChartContainer, botones);
+	        
 	    } catch (IllegalArgumentException e) {
 	        // Si la validación falla, mostramos un error
-	        vista.showAlert("Error", e.getMessage());
+	        vista.showAlert(ERROR, e.getMessage());
 	    }
 	}
+
+	public FinanceEntry getModel() {
+		return model;
+	}
+
+	public void setModel(FinanceEntry model) {
+		this.model = model;
+	}
+	
+	
 
 
 }
