@@ -31,7 +31,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         mostrarPantallaLogin(primaryStage);
     }
-
+    //metodo para inicializar la pantalla de login
     private void mostrarPantallaLogin(Stage primaryStage) {
         Stage loginStage = new Stage();
         loginStage.initModality(Modality.APPLICATION_MODAL);
@@ -126,9 +126,8 @@ public class Main extends Application {
         loginStage.setScene(loginScene);
         loginStage.show();
     }
-
-
-
+    
+    //metodo para lanzar la pantalla principal si el login es correcto
     public void mostrarPantallaPrincipal(Stage primaryStage) {
         try {
             BorderPane root = new BorderPane();
@@ -190,7 +189,8 @@ public class Main extends Application {
             e.printStackTrace();
         }
     }
-
+    
+    //metodo para crear la tabla de datos
     private TableView<FinanceEntry> crearTablaFinance() {
         TableView<FinanceEntry> table = new TableView<>();
         TableColumn<FinanceEntry, String> nombreCol = new TableColumn<>("Nombre");
@@ -217,9 +217,8 @@ public class Main extends Application {
         table.setPrefWidth(250);
         return table;
     }
-
     
-    
+    //metodo para rellenar la tabla con la informacion del modelo FinanceEntry
     public void agregarEntrada(TextField nombre, TextField cantidad, RadioButton gasto, RadioButton ingreso, ObservableList<FinanceEntry> financeData, VBox pieChartContainer, ToggleGroup botones) {
         String entryName = nombre.getText();
         String entryAmountStr = cantidad.getText();
@@ -246,8 +245,8 @@ public class Main extends Application {
             showAlert("Error", "Cantidad inválida.");
         }
     }
-
-
+    
+    //metodo para añadir el boton de eliminar en la tabla, asociado a la fila correspondiente
     private Button crearBotonEliminar(String entryName, double entryAmount, ObservableList<FinanceEntry> financeData, VBox pieChartContainer) {
         Button deleteButton = new Button();
         Image papeleraIcon = new Image(getClass().getResourceAsStream("papelera_icon.png"));
@@ -262,8 +261,8 @@ public class Main extends Application {
         });
         return deleteButton;
     }
-
-
+    
+    //metodo secundario usado por actualizarPiechart() para actualizar el gráfico
     private void actualizarBalanceYGrafico(ObservableList<FinanceEntry> financeData, VBox pieChartContainer) {
         double totalIngresos = financeData.stream().filter(e -> e.getType().equals("Ingreso")).mapToDouble(FinanceEntry::getAmount).sum();
         double totalGastos = financeData.stream().filter(e -> e.getType().equals("Gasto")).mapToDouble(FinanceEntry::getAmount).sum();
@@ -271,7 +270,8 @@ public class Main extends Application {
 
         actualizarPieChart(pieChartContainer, totalIngresos, totalGastos, balance);
     }
-
+    
+    //metodo que actualiza el gráfico con ingresos gastos y balance
     private void actualizarPieChart(VBox pieChartContainer, double totalIngresos, double totalGastos, double balance) {
         if (!pieChartContainer.isVisible()) {
             PieChart pieChart = crearPieChart(totalIngresos, totalGastos, balance);
@@ -282,7 +282,8 @@ public class Main extends Application {
             actualizarDatosPieChart(pieChart, totalIngresos, totalGastos, balance);
         }
     }
-
+    
+    //metodo para inicializar el piechart
     private PieChart crearPieChart(double totalIngresos, double totalGastos, double balance) {
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
                 new PieChart.Data("Ingresos: " + totalIngresos + " €", totalIngresos),
@@ -295,14 +296,16 @@ public class Main extends Application {
         setBalanceColor(pieChartData.get(2), balance);
         return pieChart;
     }
-
+   
+    //metodo primario para actualizar los datos del piechart
     private void actualizarDatosPieChart(PieChart pieChart, double totalIngresos, double totalGastos, double balance) {
         pieChart.getData().set(0, new PieChart.Data("Ingresos: " + totalIngresos + " €", totalIngresos));
         pieChart.getData().set(1, new PieChart.Data("Gastos: " + totalGastos + " €", totalGastos));
         pieChart.getData().set(2, new PieChart.Data("Balance: " + balance + " €", Math.abs(balance)));
         setBalanceColor(pieChart.getData().get(2), balance);
     }
-
+    
+    //metodo para calcular la diferencia entre el balance y la cantidad introducida por el usuario
     private void calcularMeta(TextField meta, Label resultadoMeta, ObservableList<FinanceEntry> financeData) {
         try {
             double metaValue = Double.parseDouble(meta.getText());
@@ -317,13 +320,15 @@ public class Main extends Application {
             showAlert("Valor Inválido", "Debe introducir un número válido para la meta financiera.");
         }
     }
-
+    
+    //metodo para calcular el balance actual (ingresos - gastos)
     private double calcularBalance(ObservableList<FinanceEntry> financeData) {
         double totalIngresos = financeData.stream().filter(e -> e.getType().equals("Ingreso")).mapToDouble(FinanceEntry::getAmount).sum();
         double totalGastos = financeData.stream().filter(e -> e.getType().equals("Gasto")).mapToDouble(FinanceEntry::getAmount).sum();
         return totalIngresos - totalGastos;
     }
-
+    
+    //metodo para colorear el grafico segun si el balance es positivo (verde) o negativo (rojo)
     private void setBalanceColor(PieChart.Data data, double balance) {
         if (balance >= 0) {
             data.getNode().setStyle("-fx-pie-color: #66BB6A;");
@@ -331,7 +336,8 @@ public class Main extends Application {
             data.getNode().setStyle("-fx-pie-color: #EF5350;");
         }
     }
-
+    
+    //metodo de creacion de las alertas
     public void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -339,7 +345,8 @@ public class Main extends Application {
         alert.setContentText(content);
         alert.showAndWait();
     }
-
+    
+    //metodo de inicio de la aplicacion
     public static void main(String[] args) {
         launch(args);
     }
