@@ -3,17 +3,15 @@ package com.carballeira.model;
 import javafx.scene.control.Button;
 
 public class FinanceEntry {
-    private final String name;
-    private final String amount;
-    private final String type;
-    private Button deleteButton;
+	private final String name;
+	private final String amount;
+	private final String type;
+	private Button deleteButton;
 
-    public static final String ERROR_NOMBRE_VACIO = "El campo del nombre no puede estar vacío.";
-    public static final String ERROR_CANTIDAD_VACIA = "El campo de cantidad no puede estar vacío.";
-    public static final String ERROR_TIPO_NO_SELECCIONADO = "Debe seleccionar al menos un tipo: Gasto o Ingreso.";
-    public static final String ERROR_CANTIDAD_INVALIDA = "Debe introducir un número válido para la cantidad.";
-
-
+	public static final String ERROR_NOMBRE_VACIO = "El campo del nombre no puede estar vacío.";
+	public static final String ERROR_CANTIDAD_VACIA = "El campo de cantidad no puede estar vacío.";
+	public static final String ERROR_TIPO_NO_SELECCIONADO = "Debe seleccionar al menos un tipo: Gasto o Ingreso.";
+	public static final String ERROR_CANTIDAD_INVALIDA = "Debe introducir un número válido para la cantidad.";
 
 	public FinanceEntry(String name, String amount, String type, Button deleteButton) {
 		super();
@@ -22,10 +20,6 @@ public class FinanceEntry {
 		this.type = type;
 		this.deleteButton = deleteButton;
 	}
-	
-
-	    
-
 
 	public FinanceEntry(String name, String amount, String type) {
 		super();
@@ -34,65 +28,51 @@ public class FinanceEntry {
 		this.type = type;
 	}
 
-
-
-
-
 	public String getName() {
-        return name;
-    }
-
-    public String getAmount() {
-        return amount;
-    }
-
-    public String getType() {
-        return type;
-    }
-    
-    
-
-
-    public Button getDeleteButton() {
-		return deleteButton;
+		return name;
 	}
 
+	public String getAmount() {
+		return amount;
+	}
 
+	public String getType() {
+		return type;
+	}
 
-
+	public Button getDeleteButton() {
+		return deleteButton;
+	}
 
 	public void setDeleteButton(Button deleteButton) {
 		this.deleteButton = deleteButton;
 	}
 
-
-
-
-
 	public String validarEntrada() {
-	    // Verifica si el nombre está vacío
-	    if (name.isEmpty()) {
-	        return ERROR_NOMBRE_VACIO;
-	    }
-	    
-	    // Verifica si la cantidad está vacía
-	    if (amount.isEmpty()) {
-	        return ERROR_CANTIDAD_VACIA;
-	    }
+		// Verifica si el nombre está vacío
+		if (name.isEmpty()) {
+			return ERROR_NOMBRE_VACIO;
+		}
 
-	    // Verifica si el tipo es nulo
-	    if (type == null) {
-	        return ERROR_TIPO_NO_SELECCIONADO;
-	    }
+		// Verifica si la cantidad está vacía
+		if (amount.isEmpty()) {
+			return ERROR_CANTIDAD_VACIA;
+		}
 
-	    // Verifica si la cantidad es un número válido
-	    try {
-	        Double.parseDouble(amount);
-	    } catch (NumberFormatException e) {
-	        return ERROR_CANTIDAD_INVALIDA;
-	    }
-	    //si no hay ningun error, devuelve un string vacio que se usa posteriormente como validador
-	    return ""; 
+		// Verifica si el tipo es nulo
+		if (type == null) {
+			return ERROR_TIPO_NO_SELECCIONADO;
+		}
+
+		// Verifica si la cantidad es un número válido
+		try {
+			Double.parseDouble(amount);
+		} catch (NumberFormatException e) {
+			return ERROR_CANTIDAD_INVALIDA;
+		}
+		// si no hay ningun error, devuelve un string vacio que se usa posteriormente
+		// como validador
+		return "";
 	}
 
 }
