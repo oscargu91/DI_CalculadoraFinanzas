@@ -291,7 +291,7 @@ public class Main extends Application {
 		String entryName = model.getName();
 		String entryAmountStr = String.valueOf(model.getAmount());
 		String entryType = model.getType();
-
+ 
 		try {
 
 			// Creamos el botón de eliminación para la entrada
