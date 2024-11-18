@@ -9,4 +9,13 @@
     <fullyQualifiedTypeName name="com.carballeira.view.Main"/>
     <fullyQualifiedTypeName name="com.carballeira.controller.LoginController"/>
     <fullyQualifiedTypeName name="com.carballeira.controller.FinanceController"/>
+    <fullyQualifiedTypeName name="javafx.animation.Timeline"/>
+    <fullyQualifiedTypeName name="java.time.Duration"/>
+    <fullyQualifiedTypeName name="javafx.util.Duration"/>
+    <fullyQualifiedTypeName name="javafx.animation.KeyFrame"/>
+    <fullyQualifiedTypeName name="com.carballeira.model.FinanceEntry"/>
+    <fullyQualifiedTypeName name="javafx.scene.layout.HBox"/>
+    <fullyQualifiedTypeName name="javafx.scene.control.Separator"/>
+    <fullyQualifiedTypeName name="com.carballeira.controller.AlertaController"/>
+    <fullyQualifiedTypeName name="com.carballeira.view.AlertaView"/>
 </qualifiedTypeNameHistroy>

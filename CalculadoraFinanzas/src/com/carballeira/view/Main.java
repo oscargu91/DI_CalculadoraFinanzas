@@ -235,6 +235,9 @@ public class Main extends Application {
 				controller.setModel(modelo);
 
 				controller.agregarDatos(financeData, pieChartContainer, botones);
+				nombre.clear();
+				cantidad.clear();
+				botones.selectToggle(null);
 			});
 
 			HBox contenidoInferior = new HBox();
@@ -326,7 +329,7 @@ public class Main extends Application {
 		deleteButton.setStyle("-fx-background-color: transparent;");
 		deleteButton.setOnAction(event -> {
 			financeData.removeIf(entry -> entry.getName().equals(entryName) && entry.getAmount() == entryAmount);
-			actualizarBalanceYGrafico(financeData, pieChartContainer);
+			actualizarBalanceYGrafico(financeData, pieChartContainer);	
 		});
 		return deleteButton;
 	}

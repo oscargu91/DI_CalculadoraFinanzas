@@ -2,20 +2,21 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item key="casesensitive" value="false"/>
-		<item key="wholeword" value="true"/>
+		<item key="wholeword" value="false"/>
 		<item key="isRegEx" value="false"/>
-		<item key="selection" value="Meta"/>
+		<item key="selection" value="controladorAlerta"/>
 		<list key="findhistory">
 			<item value="meta"/>
-			<item value="Double"/>
+			<item value="controladorAlerta"/>
+			<item value="showAlert"/>
+			<item value="&quot;papelera_icon.png&quot;"/>
+			<item value="deleteButton"/>
 			<item value="crearBotonEliminar"/>
-			<item value="calcularMeta"/>
+			<item value="controller"/>
 			<item value="agregarEntrada"/>
-			<item value="manejarInicioSesion"/>
-			<item value="contro"/>
-			<item value="agrega"/>
 		</list>
 		<list key="replacehistory">
+			<item value="RUTA_PAPELERA"/>
 			<item value="double"/>
 		</list>
 	</section>
